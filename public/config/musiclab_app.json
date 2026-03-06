@@ -1,0 +1,28 @@
+{
+  "config_version": 1,
+  "updated_at": "2026-03-07",
+  "banned_device_ids": [],
+  "version": {
+    "min_version": "1.0.0",
+    "latest_version": "1.0.0",
+    "force_update": false,
+    "update_url_ios": "",
+    "update_url_android": ""
+  },
+  "announcement": {
+    "enabled": false,
+    "id": "",
+    "type": "dialog",
+    "level": "info",
+    "title": "",
+    "content": "",
+    "link": "",
+    "link_text": ""
+  },
+  "features": {
+    "sheet_import_enabled": true,
+    "piano_enabled": true,
+    "maintenance_mode": false,
+    "maintenance_message": "系统维护中，请稍后再试"
+  }
+}
