@@ -41,11 +41,11 @@ const currentYear = new Date().getFullYear()
         <a href={localePath(lang)} class="hover:text-white transition-colors">
           {t('nav.home')}
         </a>
-        <a href={localePath(lang, 'privacy')} class="hover:text-white transition-colors">
-          {t('nav.privacy')}
-        </a>
         <a href={localePath(lang, 'terms')} class="hover:text-white transition-colors">
           {t('nav.terms')}
+        </a>
+        <a href={localePath(lang, 'privacy')} class="hover:text-white transition-colors">
+          {t('nav.privacy')}
         </a>
         {
           footer.links.map((link) => (

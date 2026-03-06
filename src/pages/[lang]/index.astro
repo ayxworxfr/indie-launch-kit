@@ -22,6 +22,7 @@ const config = getConfig()
 const allPages = await getCollection('pages')
 const navPages = allPages
   .filter((e) => e.id.endsWith(`-${lang}`))
+  .sort((a, b) => a.data.order - b.data.order)
   .map((e) => {
     const slug = e.id.substring(0, e.id.lastIndexOf('-'))
     return { title: e.data.title, href: localePath(lang, slug) }

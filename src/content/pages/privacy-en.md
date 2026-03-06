@@ -1,5 +1,6 @@
 ---
 title: Privacy Policy
+order: 2
 ---
 
 # Privacy Policy

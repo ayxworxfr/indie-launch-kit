@@ -1,5 +1,6 @@
 ---
 title: Terms of Service
+order: 1
 ---
 
 # Terms of Service
