@@ -70,6 +70,10 @@ screenshots:
     alt:
       zh: '课程详情'
       en: 'Course details'
+  - src: '/images/music-play.png'
+    alt:
+      zh: '乐谱播放'
+      en: 'Music play'
   - src: '/images/virtual-piano.png'
     alt:
       zh: '虚拟钢琴'
