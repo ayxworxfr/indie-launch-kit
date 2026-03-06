@@ -63,4 +63,5 @@ These Terms are governed by applicable laws. In the event of a dispute, parties 
 
 If you have questions about these Terms, please contact:
 
-- Email: hello@example.com
+- Email: musiclab2026@163.com
+- QQ Group: MusicLab乐理通用户群 (Group ID: 746070035)

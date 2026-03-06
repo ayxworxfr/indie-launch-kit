@@ -75,4 +75,5 @@ We may update this Privacy Policy periodically. When changes are made, we will n
 
 If you have any questions about this Privacy Policy, please contact us:
 
-- Email: hello@example.com
+- Email: musiclab2026@163.com
+- QQ Group: MusicLab乐理通用户群 (Group ID: 746070035)
