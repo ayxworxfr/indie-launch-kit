@@ -1,4 +1,5 @@
 ---
+import { getCollection } from 'astro:content'
 import Base from '../../layouts/Base.astro'
 import Header from '../../components/Header.astro'
 import Announcement from '../../components/Announcement.astro'
@@ -16,10 +17,18 @@ export function getStaticPaths() {
 
 const { lang } = Astro.params as { lang: Locale }
 const config = getConfig()
+
+const allPages = await getCollection('pages')
+const navPages = allPages
+  .filter((e) => e.id.endsWith(`-${lang}`))
+  .map((e) => {
+    const slug = e.id.substring(0, e.id.lastIndexOf('-'))
+    return { title: e.data.title, href: `/${lang}/${slug}` }
+  })
 ---
 
 <Base {config} {lang}>
-  <Header {config} {lang} />
+  <Header {config} {lang} {navPages} />
   <Announcement {config} {lang} />
   <main>
     <Hero {config} {lang} />

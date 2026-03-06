@@ -56,14 +56,24 @@ download:
 | `screenshot-2.png` … | 更多截图（截图区展示）        | 750px+ 宽 |
 | `qrcode.png`         | 扫码下载图（可选）            | 400×400   |
 
-### 第四步：修改隐私政策和用户协议
+### 第四步：编写内容页
 
-编辑 `src/content/pages/` 目录下的 Markdown 文件：
+编辑或新增 `src/content/pages/` 目录下的 Markdown 文件：
 
-- `privacy-zh.md` / `privacy-en.md` — 隐私政策
-- `terms-zh.md` / `terms-en.md` — 用户协议
+- `privacy-zh.md` / `privacy-en.md` — 隐私政策（应用商店上架必备）
+- `terms-zh.md` / `terms-en.md` — 用户协议（应用商店上架必备）
 
-这两个页面是应用商店上架的必备材料。
+**命名规则：`{slug}-{lang}.md`**，每个文件必须包含 `title` frontmatter：
+
+```markdown
+---
+title: 隐私政策
+---
+
+正文内容...
+```
+
+新增文件后，构建时会**自动生成对应路由**（`/{lang}/{slug}`）并**自动出现在导航栏**，无需修改任何代码。
 
 ### 第五步：本地预览
 
@@ -143,7 +153,9 @@ indie-launch-kit/
 │   ├── images/                  ← ★ 放截图和 Logo（必改）
 │   └── robots.txt               ← SEO 爬虫配置
 ├── src/
-│   ├── content/pages/           ← ★ 隐私政策和用户协议 Markdown（建议改）
+│   ├── content/pages/           ← ★ 内容页 Markdown（建议改 / 可自由新增）
+│   │                               命名：{slug}-{lang}.md
+│   │                               新增文件自动生成路由和导航链接
 │   ├── locales/                 ← UI 文案翻译（一般不需要改）
 │   │   ├── zh.yaml
 │   │   └── en.yaml
@@ -166,7 +178,7 @@ indie-launch-kit/
 - ✅ **纯静态输出**：无服务器，可部署到 COS / Cloudflare Pages / GitHub Pages
 - ✅ **SEO 友好**：canonical URL、Open Graph、Twitter Card、robots.txt 全齐
 - ✅ **公告横幅**：可配置的顶部公告，用户关闭后记忆状态（localStorage）
-- ✅ **内容页**：隐私政策和用户协议 Markdown 渲染，上架应用商店必备
+- ✅ **内容页自动路由**：在 `src/content/pages/` 新增 `{slug}-{lang}.md` 即自动生成路由和导航，无需写代码
 - ✅ **GitHub Actions**：三种一键部署方案 + 构建产物可下载
 
 ---

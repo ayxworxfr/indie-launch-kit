@@ -1,0 +1,51 @@
+---
+import { getCollection, render } from 'astro:content'
+import Base from '../../layouts/Base.astro'
+import Header from '../../components/Header.astro'
+import Footer from '../../components/Footer.astro'
+import { getConfig } from '../../utils/config'
+import type { Locale } from '../../utils/i18n'
+
+export async function getStaticPaths() {
+  const entries = await getCollection('pages')
+  return entries.map((entry) => {
+    const lastDash = entry.id.lastIndexOf('-')
+    const slug = entry.id.substring(0, lastDash)
+    const lang = entry.id.substring(lastDash + 1)
+    return { params: { lang, slug }, props: { entry } }
+  })
+}
+
+const { lang } = Astro.params as { lang: Locale }
+const { entry } = Astro.props
+const config = getConfig()
+
+const allPages = await getCollection('pages')
+const navPages = allPages
+  .filter((e) => e.id.endsWith(`-${lang}`))
+  .map((e) => {
+    const slug = e.id.substring(0, e.id.lastIndexOf('-'))
+    return { title: e.data.title, href: `/${lang}/${slug}` }
+  })
+
+const { Content } = await render(entry)
+---
+
+<Base {config} {lang} title={entry.data.title}>
+  <Header {config} {lang} {navPages} />
+
+  <main class="min-h-screen pt-24 pb-20">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+      <article
+        class="prose prose-lg max-w-none
+               prose-headings:font-bold prose-headings:text-gray-900
+               prose-p:text-gray-600 prose-p:leading-relaxed
+               prose-li:text-gray-600"
+      >
+        <Content />
+      </article>
+    </div>
+  </main>
+
+  <Footer {config} {lang} />
+</Base>

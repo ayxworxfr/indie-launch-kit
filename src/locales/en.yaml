@@ -1,7 +1,5 @@
 nav:
   home: 'Home'
-  privacy: 'Privacy Policy'
-  terms: 'Terms of Service'
   menu_open: 'Open menu'
   menu_close: 'Close menu'
 

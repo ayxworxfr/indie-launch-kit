@@ -4,12 +4,18 @@ import type { Locale } from '../utils/i18n'
 import { useTranslations } from '../utils/i18n'
 import LanguageSwitcher from './LanguageSwitcher.astro'
 
+interface NavPage {
+  title: string
+  href: string
+}
+
 interface Props {
   config: AppConfig
   lang: Locale
+  navPages: NavPage[]
 }
 
-const { config, lang } = Astro.props
+const { config, lang, navPages } = Astro.props
 const t = useTranslations(lang)
 ---
 
@@ -46,18 +52,16 @@ const t = useTranslations(lang)
         >
           {t('nav.home')}
         </a>
-        <a
-          href={`/${lang}/privacy`}
-          class="text-sm font-medium text-current/85 hover:text-current transition-colors"
-        >
-          {t('nav.privacy')}
-        </a>
-        <a
-          href={`/${lang}/terms`}
-          class="text-sm font-medium text-current/85 hover:text-current transition-colors"
-        >
-          {t('nav.terms')}
-        </a>
+        {
+          navPages.map((page) => (
+            <a
+              href={page.href}
+              class="text-sm font-medium text-current/85 hover:text-current transition-colors"
+            >
+              {page.title}
+            </a>
+          ))
+        }
         <LanguageSwitcher {lang} />
       </nav>
 
@@ -108,18 +112,16 @@ const t = useTranslations(lang)
       >
         {t('nav.home')}
       </a>
-      <a
-        href={`/${lang}/privacy`}
-        class="px-4 py-3 rounded-lg text-gray-700 font-medium hover:bg-gray-50 transition-colors"
-      >
-        {t('nav.privacy')}
-      </a>
-      <a
-        href={`/${lang}/terms`}
-        class="px-4 py-3 rounded-lg text-gray-700 font-medium hover:bg-gray-50 transition-colors"
-      >
-        {t('nav.terms')}
-      </a>
+      {
+        navPages.map((page) => (
+          <a
+            href={page.href}
+            class="px-4 py-3 rounded-lg text-gray-700 font-medium hover:bg-gray-50 transition-colors"
+          >
+            {page.title}
+          </a>
+        ))
+      }
     </nav>
   </div>
 </header>
