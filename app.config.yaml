@@ -101,8 +101,12 @@ seo:
 # 页脚信息
 footer:
   copyright: '乐理通'
-  contact_email: ''
-  links: []
+  contact_email: 'musiclab2026@163.com'
+  links:
+    - label:
+        zh: 'QQ 用户群 746070035'
+        en: 'QQ Group 746070035'
+      url: 'https://qun.qq.com/universal-share/share?ac=1&authKey=ol0dMWqMzEq%2FTELJRc0EYHncqWAwheQzU3WrT1vjHlV2Gr4Lfrnx52%2By3%2F0anNo4&busi_data=eyJncm91cENvZGUiOiI3NDYwNzAwMzUiLCJ0b2tlbiI6IkhqLzVPZ1N5YVpVWGI0VHpscS9BTjRZcFhNSU9RODdtcE9ZNkgwQ1pLS1Rrdmxrcm5LSS9CdVVUdVp1K0JwK2wiLCJ1aW4iOiIzMDk5MTE4MTcxIn0%3D&data=r5luGA6UKfIo5A7J_S0eDl4hboCQB-fzdyb7S5JYO1yED_cVyVU301_R_0LHd-V7mN-HMZRZluHzLEgc26C7Qg&svctype=4&tempid=h5_group_info'
 
 # 默认语言
 default_locale: 'zh'

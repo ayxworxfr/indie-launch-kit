@@ -63,4 +63,5 @@ order: 1
 
 如对本协议有任何疑问，请联系：
 
-- 邮箱：hello@example.com
+- 邮箱：musiclab2026@163.com
+- QQ 用户群：MusicLab乐理通用户群（群号 746070035）

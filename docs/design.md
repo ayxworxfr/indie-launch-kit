@@ -178,7 +178,7 @@ seo:
 # 页脚
 footer:
   copyright: '乐理通' # 版权主体，显示为 © 2026 乐理通
-  contact_email: 'hello@example.com'
+  contact_email: 'musiclab2026@163.com'
   links: [] # 额外自定义链接
 
 # 默认语言：首次访问 / 根路径重定向目标
