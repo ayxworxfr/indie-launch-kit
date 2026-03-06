@@ -11,8 +11,8 @@ app:
   description:
     zh: '乐理通是一款专为音乐爱好者设计的学习 App，涵盖简谱/五线谱/钢琴入门课程、四种练习模式、虚拟钢琴与专业乐谱编辑器'
     en: 'MusicLab is a music learning app for enthusiasts, featuring jianpu/staff notation/piano courses, four practice modes, a virtual piano, and a professional sheet music editor'
-  icon: '/images/icon.png'
-  logo: '/images/logo.png'
+  icon: '/images/favicon.png'
+  logo: '/images/favicon.png'
 
 # 主题色
 theme:
@@ -24,7 +24,7 @@ download:
   web_url: '' # Web 版体验地址（可选，如 https://app.example.com，留空则不显示）
   ios_url: ''     # 上架 App Store 后填写
   android_url: '' # 上架 Google Play 后填写
-  apk_url: ''     # 直链 APK 地址（可选）
+  apk_url: 'https://ayxworxfr.github.io/indie-launch-kit/musiclab.apk'
   qrcode: ''      # 扫码下载图路径（可选）
 
 # 功能亮点
@@ -63,22 +63,26 @@ features:
 
 # 应用截图
 screenshots:
-  - src: '/images/screenshot-1.png'
+  - src: '/images/home.png'
     alt:
-      zh: '首页截图'
+      zh: '首页'
       en: 'Home screen'
-  - src: '/images/screenshot-2.png'
+  - src: '/images/course-info.png'
     alt:
-      zh: '课程界面截图'
-      en: 'Course screen'
-  - src: '/images/screenshot-3.png'
+      zh: '课程详情'
+      en: 'Course details'
+  - src: '/images/virtual-piano.png'
     alt:
-      zh: '虚拟钢琴截图'
-      en: 'Virtual piano screen'
-  - src: '/images/screenshot-4.png'
+      zh: '虚拟钢琴'
+      en: 'Virtual piano'
+  - src: '/images/practise-list.png'
     alt:
-      zh: '练习界面截图'
-      en: 'Practice screen'
+      zh: '练习列表'
+      en: 'Practice list'
+  - src: '/images/music-reading-practice.png'
+    alt:
+      zh: '识谱练习'
+      en: 'Music reading practice'
 
 # 顶部公告横幅
 announcement:
