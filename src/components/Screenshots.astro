@@ -2,6 +2,7 @@
 import type { AppConfig } from '../utils/config'
 import type { Locale } from '../utils/i18n'
 import { useTranslations, lv } from '../utils/i18n'
+import { assetPath } from '../utils/url'
 
 interface Props {
   config: AppConfig
@@ -42,7 +43,7 @@ const { screenshots } = config
                 bg-gray-100：图片加载失败时显示浅灰占位背景，而不是坍缩成一个小框
               -->
               <img
-                src={screenshot.src}
+                src={assetPath(screenshot.src)}
                 alt={lv(screenshot.alt, lang)}
                 class="w-full aspect-[9/19] rounded-3xl shadow-xl border border-gray-200/80
                        bg-gray-100 object-cover

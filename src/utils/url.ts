@@ -15,3 +15,19 @@ export function localePath(lang: string, slug?: string): string {
   }
   return `${base}/${lang}/`
 }
+
+/**
+ * 生成带有 Astro base 路径前缀的静态资源路径
+ *
+ * app.config.yaml 中配置的图片路径（如 /images/favicon.png）是相对于站点根目录的，
+ * 部署到子路径时必须加上 base 前缀，否则会 404。
+ *
+ * @param path  以 / 开头的资源路径，如 '/images/favicon.png'
+ */
+export function assetPath(path: string): string {
+  if (!path) return path
+  // 已经是完整 URL（http/https）则直接返回
+  if (path.startsWith('http://') || path.startsWith('https://')) return path
+  const base = import.meta.env.BASE_URL.replace(/\/$/, '')
+  return `${base}${path}`
+}

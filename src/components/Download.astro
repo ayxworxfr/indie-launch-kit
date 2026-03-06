@@ -2,6 +2,7 @@
 import type { AppConfig } from '../utils/config'
 import type { Locale } from '../utils/i18n'
 import { useTranslations } from '../utils/i18n'
+import { assetPath } from '../utils/url'
 
 interface Props {
   config: AppConfig
@@ -63,7 +64,7 @@ const hasAnyDownload = showIos || showAndroid || showApk
       {showQrcode && (
         <div class="inline-block bg-white rounded-2xl p-4 shadow-2xl">
           <img
-            src={download.qrcode}
+            src={assetPath(download.qrcode)}
             alt={lang === 'zh' ? '扫码下载' : 'Scan to Download'}
             class="w-32 h-32 object-contain"
           />

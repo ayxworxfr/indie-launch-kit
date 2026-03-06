@@ -2,6 +2,7 @@
 import type { AppConfig } from '../utils/config'
 import type { Locale } from '../utils/i18n'
 import { lv } from '../utils/i18n'
+import { assetPath } from '../utils/url'
 import '../styles/global.css'
 
 interface Props {
@@ -48,8 +49,8 @@ const ogImage = siteUrl ? `${siteUrl}${config.seo.og_image}` : config.seo.og_ima
     {canonicalUrl && <link rel="canonical" href={canonicalUrl} />}
 
     <!-- 图标 -->
-    <link rel="icon" type="image/png" href={config.app.icon} />
-    <link rel="apple-touch-icon" href={config.app.icon} />
+    <link rel="icon" type="image/png" href={assetPath(config.app.icon)} />
+    <link rel="apple-touch-icon" href={assetPath(config.app.icon)} />
 
     <title>{pageTitle}</title>
 

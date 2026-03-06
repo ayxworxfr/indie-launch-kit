@@ -2,6 +2,7 @@
 import type { AppConfig } from '../utils/config'
 import type { Locale } from '../utils/i18n'
 import { useTranslations, lv } from '../utils/i18n'
+import { assetPath } from '../utils/url'
 
 interface Props {
   config: AppConfig
@@ -37,7 +38,7 @@ const hasAnyDownload = showIos || showAndroid || showApk
         <!-- App 图标 -->
         <div class={`flex mb-6 ${firstScreenshot ? 'justify-center lg:justify-start' : 'justify-center'}`}>
           <img
-            src={app.icon}
+            src={assetPath(app.icon)}
             alt={app.name}
             class="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl shadow-2xl object-cover"
           />
@@ -92,7 +93,7 @@ const hasAnyDownload = showIos || showAndroid || showApk
         <div class="flex-shrink-0">
           <div class="relative">
             <img
-              src={firstScreenshot.src}
+              src={assetPath(firstScreenshot.src)}
               alt={lv(firstScreenshot.alt, lang)}
               class="w-52 sm:w-60 lg:w-72 rounded-3xl shadow-2xl"
               loading="eager"

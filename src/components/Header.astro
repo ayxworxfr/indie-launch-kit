@@ -3,7 +3,7 @@ import type { AppConfig } from '../utils/config'
 import type { Locale } from '../utils/i18n'
 import { useTranslations } from '../utils/i18n'
 import LanguageSwitcher from './LanguageSwitcher.astro'
-import { localePath } from '../utils/url'
+import { localePath, assetPath } from '../utils/url'
 
 interface NavPage {
   title: string
@@ -31,7 +31,7 @@ const t = useTranslations(lang)
       >
         <!-- 图标：加载失败时显示首字母头像作为兜底 -->
         <img
-          src={config.app.logo}
+          src={assetPath(config.app.logo)}
           alt={config.app.name}
           class="w-8 h-8 rounded-lg object-cover"
           onerror="this.style.display='none';this.nextElementSibling.removeAttribute('hidden')"
