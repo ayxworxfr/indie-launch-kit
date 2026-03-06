@@ -1,0 +1,119 @@
+@import 'tailwindcss';
+@plugin "@tailwindcss/typography";
+
+/* 默认品牌色变量，会被 Base.astro 注入的 body 内联样式覆盖为用户配置的颜色 */
+:root {
+  --app-primary: #667eea;
+  --app-secondary: #764ba2;
+  --app-gradient: linear-gradient(135deg, var(--app-primary), var(--app-secondary));
+}
+
+/* ───────────────────────────────────────────
+   通用工具类
+─────────────────────────────────────────── */
+
+.bg-app-gradient {
+  background: var(--app-gradient);
+}
+
+.text-app-primary {
+  color: var(--app-primary);
+}
+
+/* 隐藏滚动条但保留滚动功能（截图区域横向滚动使用） */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+/* ───────────────────────────────────────────
+   下载按钮
+─────────────────────────────────────────── */
+
+/* 主按钮：白色背景 + 品牌色文字（用于渐变背景上） */
+.btn-download-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.75rem;
+  background: white;
+  color: var(--app-primary);
+  font-weight: 600;
+  font-size: 0.95rem;
+  border-radius: 9999px;
+  text-decoration: none;
+  white-space: nowrap;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+}
+
+.btn-download-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25);
+}
+
+/* 幽灵按钮：透明背景 + 白色边框（用于渐变背景上的次要操作） */
+.btn-download-ghost {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.75rem;
+  background: transparent;
+  color: white;
+  font-weight: 600;
+  font-size: 0.95rem;
+  border-radius: 9999px;
+  border: 2px solid rgba(255, 255, 255, 0.6);
+  text-decoration: none;
+  white-space: nowrap;
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.btn-download-ghost:hover {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.9);
+}
+
+/* ───────────────────────────────────────────
+   Prose 内容页（隐私政策、用户协议）链接颜色
+─────────────────────────────────────────── */
+
+.prose a {
+  color: var(--app-primary);
+}
+
+.prose a:hover {
+  opacity: 0.8;
+}
+
+/* ───────────────────────────────────────────
+   Header 滚动状态（由 JS 切换 .header-scrolled 类）
+─────────────────────────────────────────── */
+
+#site-header {
+  color: white;
+}
+
+#site-header.header-scrolled {
+  background: rgba(255, 255, 255, 0.97);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: 0 1px 8px rgba(0, 0, 0, 0.08);
+  color: #1f2937;
+}
+
+/* 滚动后手机菜单内链接颜色 */
+#site-header.header-scrolled #mobile-menu a {
+  color: #374151;
+}
+
+#site-header.header-scrolled #mobile-menu a:hover {
+  background: #f9fafb;
+}

@@ -1,0 +1,69 @@
+---
+import type { AppConfig } from '../utils/config'
+import type { Locale } from '../utils/i18n'
+import { lv } from '../utils/i18n'
+import '../styles/global.css'
+
+interface Props {
+  config: AppConfig
+  lang: Locale
+  title?: string // 自定义页面标题，不传则使用 App 名称
+  description?: string // 自定义描述，不传则使用配置中的 description
+}
+
+const { config, lang, title, description } = Astro.props
+
+const pageTitle = title ? `${title} · ${config.app.name}` : config.app.name
+const pageDescription = description || lv(config.app.description, lang)
+const { primary, secondary } = config.theme
+
+// canonical / og:url 需要绝对路径，site_url 为空时不输出（本地开发）
+const siteUrl = config.site_url.replace(/\/$/, '')
+const canonicalUrl = siteUrl ? `${siteUrl}${Astro.url.pathname}` : null
+const ogImage = siteUrl ? `${siteUrl}${config.seo.og_image}` : config.seo.og_image
+---
+
+<!doctype html>
+<html lang={lang} class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={pageDescription} />
+
+    <!-- Open Graph / 社交分享 -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={pageDescription} />
+    <meta property="og:image" content={ogImage} />
+    {canonicalUrl && <meta property="og:url" content={canonicalUrl} />}
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={pageTitle} />
+    <meta name="twitter:description" content={pageDescription} />
+    <meta name="twitter:image" content={ogImage} />
+    {config.seo.twitter_handle && <meta name="twitter:site" content={config.seo.twitter_handle} />}
+
+    <!-- Canonical URL（site_url 有值时才输出） -->
+    {canonicalUrl && <link rel="canonical" href={canonicalUrl} />}
+
+    <!-- 图标 -->
+    <link rel="icon" type="image/png" href={config.app.icon} />
+    <link rel="apple-touch-icon" href={config.app.icon} />
+
+    <title>{pageTitle}</title>
+
+    <slot name="head" />
+  </head>
+
+  <!--
+    通过 body 的 style 属性注入品牌色 CSS 变量
+    所有子组件通过 var(--app-primary) / var(--app-secondary) 取用
+  -->
+  <body
+    class="bg-white text-gray-900 antialiased"
+    style={`--app-primary:${primary};--app-secondary:${secondary};--app-gradient:linear-gradient(135deg,${primary},${secondary})`}
+  >
+    <slot />
+  </body>
+</html>

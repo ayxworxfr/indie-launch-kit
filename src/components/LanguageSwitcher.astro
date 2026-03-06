@@ -1,0 +1,30 @@
+---
+import type { Locale } from '../utils/i18n'
+
+interface Props {
+  lang: Locale
+}
+
+const { lang } = Astro.props
+
+const otherLang: Locale = lang === 'zh' ? 'en' : 'zh'
+const otherLabel = lang === 'zh' ? 'EN' : '中'
+const title = lang === 'zh' ? 'Switch to English' : '切换为中文'
+
+// 将当前 URL 路径中的语言前缀替换为目标语言
+const currentPath = Astro.url.pathname
+// 匹配 /zh 或 /en 前缀（后面可能跟 / 或子路径）
+const otherPath = currentPath.replace(new RegExp(`^/${lang}(/|$)`), `/${otherLang}$1`)
+---
+
+<a
+  href={otherPath}
+  class="lang-switcher-btn inline-flex items-center justify-center
+         w-9 h-9 rounded-full border border-current/40
+         text-sm font-semibold text-current
+         hover:bg-current/10 transition-all duration-200"
+  title={title}
+  aria-label={title}
+>
+  {otherLabel}
+</a>

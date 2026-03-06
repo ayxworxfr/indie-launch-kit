@@ -1,0 +1,103 @@
+# ============================================================
+# indie-launch-kit 配置文件
+# 修改这个文件，然后 git push，你的推广页就自动更新了
+# 所有字段都有注释说明，不需要懂代码
+# ============================================================
+
+app:
+  name: '乐理通' # App 名称（显示在页面标题、Header、Footer）
+  tagline:
+    zh: '让每个人都能学好乐理'
+    en: 'Music Theory for Everyone'
+  description: # 用于 SEO meta description（搜索引擎摘要）
+    zh: '乐理通是一款专为音乐爱好者设计的乐理学习 App，系统化学习路径，趣味互动练习'
+    en: 'A music theory learning app for music enthusiasts, with systematic learning paths and interactive exercises'
+  icon: '/images/icon.png' # App 图标（建议 1024x1024，显示在 Hero 区域和 Header）
+  logo: '/images/logo.png' # 顶部导航 Logo（可以和 icon 用同一张图）
+
+# 主题色：影响渐变背景、按钮颜色、链接色等全站品牌色
+theme:
+  primary: '#667eea' # 主色（渐变起点，也是按钮/链接的主色）
+  secondary: '#764ba2' # 辅色（渐变终点）
+
+# 下载链接：不需要的平台留空字符串 "" 即可，对应按钮会自动隐藏
+download:
+  ios_url: 'https://apps.apple.com/app/id123456789'
+  android_url: 'https://play.google.com/store/apps/details?id=com.example.app'
+  apk_url: '' # 直链 APK 地址（可选，留空则不显示）
+  qrcode: '' # 扫码下载图路径（可选，如 /images/qrcode.png）
+
+# 功能亮点：建议 3~4 个，icon 支持 emoji 或图片路径（如 /images/feature-1.png）
+features:
+  - icon: '🎵'
+    title:
+      zh: '系统化学习路径'
+      en: 'Systematic Learning Path'
+    description:
+      zh: '从基础乐理到高级和声，循序渐进，每个阶段都有清晰的学习目标'
+      en: 'From basic theory to advanced harmony, step by step with clear goals at each stage'
+
+  - icon: '🎮'
+    title:
+      zh: '互动练习'
+      en: 'Interactive Exercises'
+    description:
+      zh: '趣味测验和听力训练，边玩边学，让枯燥的乐理变得有趣'
+      en: 'Fun quizzes and ear training make learning music theory enjoyable'
+
+  - icon: '📊'
+    title:
+      zh: '学习进度追踪'
+      en: 'Progress Tracking'
+    description:
+      zh: '可视化你的学习成果，数据化展示进步，保持学习动力'
+      en: 'Visualize your progress with data, stay motivated on your learning journey'
+
+# 应用截图：按展示顺序排列，第一张同时出现在 Hero 区域
+# 建议放 3~5 张，格式为 PNG/WebP，建议宽度 750px 以上
+screenshots:
+  - src: '/images/screenshot-1.png'
+    alt:
+      zh: '主界面截图'
+      en: 'Main screen'
+  - src: '/images/screenshot-2.png'
+    alt:
+      zh: '练习界面截图'
+      en: 'Exercise screen'
+  - src: '/images/screenshot-3.png'
+    alt:
+      zh: '进度界面截图'
+      en: 'Progress screen'
+
+# 顶部公告横幅（可选）：常用于版本更新通知、活动公告等
+# 用户关闭后不再显示，直到公告内容变更
+announcement:
+  enabled: false # true 显示，false 隐藏
+  content:
+    zh: '🎉 2.0 版本正式发布！全新 UI 设计，体验更流畅'
+    en: '🎉 Version 2.0 is now live! New UI design, smoother experience'
+
+# 站点域名：用于生成 canonical URL 和 og:url，对 SEO 非常重要
+# 格式：https://你的域名（结尾不加斜杠）
+# 本地开发时留空即可，部署后务必填写
+site_url: 'https://your-app.com'
+
+# SEO 与社交分享设置
+seo:
+  og_image: '/images/og-image.png' # 分享到微信/微博/Twitter 时的预览图（建议 1200x630）
+  twitter_handle: '' # Twitter/X 账号，如 "@yourhandle"（留空则不输出）
+
+# 页脚信息
+footer:
+  copyright: '乐理通' # 版权主体名称，显示为 © 2026 乐理通
+  contact_email: 'hello@example.com' # 联系邮箱（留空则不显示）
+  links: [] # 额外链接，示例如下（删掉 # 启用）：
+  # links:
+  #   - label:
+  #       zh: "帮助中心"
+  #       en: "Help Center"
+  #     url: "https://help.example.com"
+
+# 默认语言：首次访问 / 根路径时跳转到哪个语言
+# 可选值：zh | en
+default_locale: 'zh'

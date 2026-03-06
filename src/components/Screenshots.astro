@@ -1,0 +1,59 @@
+---
+import type { AppConfig } from '../utils/config'
+import type { Locale } from '../utils/i18n'
+import { useTranslations, lv } from '../utils/i18n'
+
+interface Props {
+  config: AppConfig
+  lang: Locale
+}
+
+const { config, lang } = Astro.props
+const t = useTranslations(lang)
+const { screenshots } = config
+
+// 第 1 张截图已在 Hero 展示，只有超过 1 张时才渲染此区块
+---
+
+{screenshots.length > 1 && (
+  <section class="py-20 lg:py-28 bg-gray-50">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+
+      <!-- 标题 -->
+      <div class="text-center mb-12">
+        <h2 class="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
+          {t('sections.screenshots')}
+        </h2>
+        <div class="w-12 h-1 rounded-full mx-auto bg-app-gradient"></div>
+      </div>
+
+      <!--
+        移动端：overflow-x-auto 横向滚动 + snap 吸附
+        桌面端：flex-wrap + justify-center 自动折行居中
+        -mx-4 px-4 让滚动区域延伸到视口边缘（移动端更自然）
+      -->
+      <div class="overflow-x-auto scrollbar-hide -mx-4 px-4 md:mx-0 md:px-0">
+        <div class="flex gap-5 pb-2 snap-x snap-mandatory
+                    md:flex-wrap md:justify-center md:snap-none">
+          {screenshots.map((screenshot, index) => (
+            <div class="flex-shrink-0 w-48 sm:w-56 snap-center">
+              <!--
+                aspect-[9/19]：手机截图标准比例，保证图片未加载时也撑起正确高度
+                bg-gray-100：图片加载失败时显示浅灰占位背景，而不是坍缩成一个小框
+              -->
+              <img
+                src={screenshot.src}
+                alt={lv(screenshot.alt, lang)}
+                class="w-full aspect-[9/19] rounded-3xl shadow-xl border border-gray-200/80
+                       bg-gray-100 object-cover
+                       hover:scale-105 hover:shadow-2xl transition-all duration-300"
+                loading={index === 0 ? 'eager' : 'lazy'}
+              />
+            </div>
+          ))}
+        </div>
+      </div>
+
+    </div>
+  </section>
+)}

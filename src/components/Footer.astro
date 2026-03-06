@@ -1,0 +1,91 @@
+---
+import type { AppConfig } from '../utils/config'
+import type { Locale } from '../utils/i18n'
+import { useTranslations, lv } from '../utils/i18n'
+
+interface Props {
+  config: AppConfig
+  lang: Locale
+}
+
+const { config, lang } = Astro.props
+const t = useTranslations(lang)
+const { footer, app } = config
+const currentYear = new Date().getFullYear()
+---
+
+<footer class="bg-gray-900 text-gray-400 py-12">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex flex-col items-center gap-6">
+      <!-- Logo + App 名称 -->
+      <div class="flex items-center gap-2.5">
+        <!-- 图标：加载失败时显示首字母头像作为兜底 -->
+        <img
+          src={app.logo}
+          alt={app.name}
+          class="w-7 h-7 rounded-lg object-cover opacity-80"
+          onerror="this.style.display='none';this.nextElementSibling.removeAttribute('hidden')"
+        />
+        <span
+          hidden
+          class="w-7 h-7 rounded-lg flex-shrink-0 flex items-center justify-center text-white font-bold text-xs opacity-80"
+          style="background: var(--app-gradient)"
+          aria-hidden="true">{app.name.charAt(0)}</span
+        >
+        <span class="text-white font-semibold">{app.name}</span>
+      </div>
+
+      <!-- 导航链接 -->
+      <nav class="flex flex-wrap justify-center gap-x-6 gap-y-2 text-sm">
+        <a href={`/${lang}/`} class="hover:text-white transition-colors">
+          {t('nav.home')}
+        </a>
+        <a href={`/${lang}/privacy`} class="hover:text-white transition-colors">
+          {t('nav.privacy')}
+        </a>
+        <a href={`/${lang}/terms`} class="hover:text-white transition-colors">
+          {t('nav.terms')}
+        </a>
+        {
+          footer.links.map((link) => (
+            <a
+              href={link.url}
+              class="hover:text-white transition-colors"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {lv(link.label, lang)}
+            </a>
+          ))
+        }
+      </nav>
+
+      <!-- 联系邮箱 -->
+      {
+        footer.contact_email && (
+          <a
+            href={`mailto:${footer.contact_email}`}
+            class="text-sm hover:text-white transition-colors"
+          >
+            {t('footer.contact')}: {footer.contact_email}
+          </a>
+        )
+      }
+
+      <!-- 版权信息 -->
+      <div class="text-xs text-center space-y-1.5 text-gray-500">
+        <p>© {currentYear} {footer.copyright}. {t('footer.rights')}.</p>
+        <p>
+          <a
+            href="https://github.com/indie-launch-kit/indie-launch-kit"
+            class="hover:text-gray-300 transition-colors"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {t('footer.built_with')}
+          </a>
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>

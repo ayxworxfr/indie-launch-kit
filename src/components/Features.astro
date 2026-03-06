@@ -1,0 +1,74 @@
+---
+import type { AppConfig } from '../utils/config'
+import type { Locale } from '../utils/i18n'
+import { useTranslations, lv } from '../utils/i18n'
+
+interface Props {
+  config: AppConfig
+  lang: Locale
+}
+
+const { config, lang } = Astro.props
+const t = useTranslations(lang)
+const { features } = config
+
+// 根据功能数量决定网格列数
+const gridClass =
+  features.length === 1 ? 'grid-cols-1 max-w-sm mx-auto' :
+  features.length === 2 ? 'grid-cols-1 sm:grid-cols-2 max-w-2xl mx-auto' :
+  'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3'
+---
+
+{features.length > 0 && (
+  <section class="py-20 lg:py-28 bg-white">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+
+      <!-- 标题 -->
+      <div class="text-center mb-14">
+        <h2 class="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
+          {t('sections.features')}
+        </h2>
+        <!-- 品牌色装饰线 -->
+        <div class="w-12 h-1 rounded-full mx-auto bg-app-gradient"></div>
+      </div>
+
+      <!-- 功能卡片 -->
+      <div class={`grid gap-8 ${gridClass}`}>
+        {features.map(feature => (
+          <div class="group flex flex-col items-center text-center p-8 rounded-2xl
+                      border border-transparent hover:border-gray-100 hover:shadow-lg
+                      transition-all duration-300">
+
+            <!-- 图标：支持 emoji 和图片路径 -->
+            <div class="mb-5 group-hover:scale-110 transition-transform duration-300">
+              {feature.icon.startsWith('/') ? (
+                <img
+                  src={feature.icon}
+                  alt=""
+                  class="w-14 h-14 object-contain"
+                  aria-hidden="true"
+                />
+              ) : (
+                <span class="text-5xl leading-none" aria-hidden="true">
+                  {feature.icon}
+                </span>
+              )}
+            </div>
+
+            <!-- 标题 -->
+            <h3 class="text-xl font-semibold text-gray-900 mb-3">
+              {lv(feature.title, lang)}
+            </h3>
+
+            <!-- 描述 -->
+            <p class="text-gray-500 leading-relaxed">
+              {lv(feature.description, lang)}
+            </p>
+
+          </div>
+        ))}
+      </div>
+
+    </div>
+  </section>
+)}

@@ -1,0 +1,77 @@
+---
+import type { AppConfig } from '../utils/config'
+import type { Locale } from '../utils/i18n'
+import { useTranslations, lv } from '../utils/i18n'
+
+interface Props {
+  config: AppConfig
+  lang: Locale
+}
+
+const { config, lang } = Astro.props
+const t = useTranslations(lang)
+const { enabled, content } = config.announcement
+const announcementText = lv(content, lang)
+---
+
+{
+  enabled && announcementText && (
+    <div
+      id="announcement-banner"
+      data-content={announcementText}
+      class="bg-app-gradient text-white"
+    >
+      <div
+        class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-2.5
+                flex items-center justify-between gap-4"
+      >
+        <p class="text-sm font-medium flex-1 text-center leading-snug">{announcementText}</p>
+        <button
+          id="dismiss-announcement"
+          class="flex-shrink-0 p-1 rounded-full hover:bg-white/20
+               transition-colors text-white/80 hover:text-white"
+          aria-label={t('announcement.dismiss')}
+        >
+          <svg
+            class="w-4 h-4"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            stroke-width="2.5"
+          >
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+    </div>
+  )
+}
+
+<script>
+  const banner = document.getElementById('announcement-banner') as HTMLElement | null
+  const dismissBtn = document.getElementById('dismiss-announcement')
+
+  if (banner) {
+    const content = banner.dataset.content ?? ''
+    const STORAGE_KEY = 'ilk_announcement_dismissed'
+
+    // 公告内容未变化时不再显示
+    if (localStorage.getItem(STORAGE_KEY) === content) {
+      banner.remove()
+    }
+
+    dismissBtn?.addEventListener('click', () => {
+      // 记录已关闭的内容，公告更新后重新显示
+      localStorage.setItem(STORAGE_KEY, content)
+      // 带动画地收起
+      banner.style.overflow = 'hidden'
+      banner.style.transition = 'max-height 0.3s ease, opacity 0.3s ease'
+      banner.style.maxHeight = `${banner.offsetHeight}px`
+      requestAnimationFrame(() => {
+        banner.style.maxHeight = '0'
+        banner.style.opacity = '0'
+      })
+      setTimeout(() => banner.remove(), 300)
+    })
+  }
+</script>

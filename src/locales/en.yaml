@@ -1,0 +1,25 @@
+nav:
+  home: 'Home'
+  privacy: 'Privacy Policy'
+  terms: 'Terms of Service'
+  menu_open: 'Open menu'
+  menu_close: 'Close menu'
+
+hero:
+  ios_download: 'App Store'
+  android_download: 'Google Play'
+  apk_download: 'Download APK'
+
+sections:
+  features: 'Features'
+  screenshots: 'Screenshots'
+  download: 'Download Now'
+  download_subtitle: 'Choose your platform, free to download'
+
+footer:
+  rights: 'All rights reserved'
+  built_with: 'Built with indie-launch-kit'
+  contact: 'Contact'
+
+announcement:
+  dismiss: 'Got it'

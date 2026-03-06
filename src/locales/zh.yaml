@@ -1,0 +1,25 @@
+nav:
+  home: '首页'
+  privacy: '隐私政策'
+  terms: '用户协议'
+  menu_open: '打开菜单'
+  menu_close: '关闭菜单'
+
+hero:
+  ios_download: 'App Store 下载'
+  android_download: 'Google Play 下载'
+  apk_download: 'APK 直接下载'
+
+sections:
+  features: '核心功能'
+  screenshots: '应用截图'
+  download: '立即下载'
+  download_subtitle: '选择你的平台，免费下载'
+
+footer:
+  rights: '保留所有权利'
+  built_with: '使用 indie-launch-kit 构建'
+  contact: '联系我们'
+
+announcement:
+  dismiss: '知道了'

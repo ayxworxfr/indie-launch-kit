@@ -1,0 +1,12 @@
+dist/
+node_modules/
+.astro/
+package-lock.json
+
+# 以下组件在 JSX 表达式 ({condition && (...)}) 内使用了 HTML 注释 (<!-- -->)
+# prettier-plugin-astro 在解析阶段就会失败（不是格式化阶段），无法通过 prettier-ignore 绕过
+# 这是 prettier-plugin-astro 的已知限制：JSX 语法层面不允许 <!-- --> 注释
+src/components/Download.astro
+src/components/Features.astro
+src/components/Hero.astro
+src/components/Screenshots.astro

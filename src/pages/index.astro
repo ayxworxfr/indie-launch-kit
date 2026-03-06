@@ -1,0 +1,7 @@
+---
+// 根路径重定向到默认语言版本
+import { getConfig } from '../utils/config'
+
+const config = getConfig()
+return Astro.redirect(`/${config.default_locale}/`, 302)
+---
