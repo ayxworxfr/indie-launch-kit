@@ -12,9 +12,12 @@ const otherLabel = lang === 'zh' ? 'EN' : '中'
 const title = lang === 'zh' ? 'Switch to English' : '切换为中文'
 
 // 将当前 URL 路径中的语言前缀替换为目标语言
+// 需要先剥离 base 路径前缀，再做语言替换，最后拼回来
+const base = import.meta.env.BASE_URL.replace(/\/$/, '')
 const currentPath = Astro.url.pathname
-// 匹配 /zh 或 /en 前缀（后面可能跟 / 或子路径）
-const otherPath = currentPath.replace(new RegExp(`^/${lang}(/|$)`), `/${otherLang}$1`)
+const pathWithoutBase = currentPath.startsWith(base) ? currentPath.slice(base.length) : currentPath
+const otherPathWithoutBase = pathWithoutBase.replace(new RegExp(`^/${lang}(/|$)`), `/${otherLang}$1`)
+const otherPath = base + otherPathWithoutBase
 ---
 
 <a

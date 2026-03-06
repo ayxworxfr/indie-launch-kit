@@ -10,6 +10,7 @@ import Download from '../../components/Download.astro'
 import Footer from '../../components/Footer.astro'
 import { getConfig } from '../../utils/config'
 import type { Locale } from '../../utils/i18n'
+import { localePath } from '../../utils/url'
 
 export function getStaticPaths() {
   return [{ params: { lang: 'zh' } }, { params: { lang: 'en' } }]
@@ -23,7 +24,7 @@ const navPages = allPages
   .filter((e) => e.id.endsWith(`-${lang}`))
   .map((e) => {
     const slug = e.id.substring(0, e.id.lastIndexOf('-'))
-    return { title: e.data.title, href: `/${lang}/${slug}` }
+    return { title: e.data.title, href: localePath(lang, slug) }
   })
 ---
 

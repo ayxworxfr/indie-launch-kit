@@ -3,6 +3,7 @@ import type { AppConfig } from '../utils/config'
 import type { Locale } from '../utils/i18n'
 import { useTranslations } from '../utils/i18n'
 import LanguageSwitcher from './LanguageSwitcher.astro'
+import { localePath } from '../utils/url'
 
 interface NavPage {
   title: string
@@ -24,7 +25,7 @@ const t = useTranslations(lang)
     <div class="flex items-center justify-between h-16">
       <!-- Logo + App 名称 -->
       <a
-        href={`/${lang}/`}
+        href={localePath(lang)}
         class="flex items-center gap-2.5 font-bold text-lg text-current
                hover:opacity-80 transition-opacity"
       >
@@ -47,7 +48,7 @@ const t = useTranslations(lang)
       <!-- 桌面端导航 -->
       <nav class="hidden md:flex items-center gap-6">
         <a
-          href={`/${lang}/`}
+          href={localePath(lang)}
           class="text-sm font-medium text-current/85 hover:text-current transition-colors"
         >
           {t('nav.home')}
@@ -107,7 +108,7 @@ const t = useTranslations(lang)
   <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-gray-100 shadow-lg">
     <nav class="max-w-6xl mx-auto px-4 py-3 flex flex-col">
       <a
-        href={`/${lang}/`}
+        href={localePath(lang)}
         class="px-4 py-3 rounded-lg text-gray-700 font-medium hover:bg-gray-50 transition-colors"
       >
         {t('nav.home')}
