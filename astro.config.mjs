@@ -17,6 +17,7 @@ function getSiteUrl() {
 
 export default defineConfig({
   site: getSiteUrl(),
+  base: process.env.BASE_PATH || '/',
   output: 'static',
   devToolbar: { enabled: false },
   vite: {

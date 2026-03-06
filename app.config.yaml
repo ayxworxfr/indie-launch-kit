@@ -80,7 +80,7 @@ announcement:
 # 站点域名：用于生成 canonical URL 和 og:url，对 SEO 非常重要
 # 格式：https://你的域名（结尾不加斜杠）
 # 本地开发时留空即可，部署后务必填写
-site_url: 'https://your-app.com'
+site_url: 'https://ayxworxfr.github.io/indie-launch-kit'
 
 # SEO 与社交分享设置
 seo:

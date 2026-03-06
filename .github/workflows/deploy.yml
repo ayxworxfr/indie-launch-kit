@@ -27,6 +27,8 @@ jobs:
 
       - name: 构建静态文件
         run: npm run build
+        env:
+          BASE_PATH: /indie-launch-kit
 
       # 上传构建产物（可在 GitHub Actions 页面 > 该次运行 > Artifacts 处下载）
       - name: 上传构建产物
