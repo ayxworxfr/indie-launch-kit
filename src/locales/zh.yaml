@@ -1,5 +1,7 @@
 nav:
   home: '首页'
+  privacy: '隐私政策'
+  terms: '用户协议'
   menu_open: '打开菜单'
   menu_close: '关闭菜单'
 
