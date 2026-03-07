@@ -10,12 +10,12 @@
     "update_url_android": ""
   },
   "announcement": {
-    "enabled": false,
-    "id": "",
+    "enabled": true,
+    "id": "launch-thank-you-20260307",
     "type": "dialog",
     "level": "info",
-    "title": "",
-    "content": "",
+    "title": "感谢你的支持 🎵",
+    "content": "乐理通正式上线啦！感谢每一位下载体验的朋友，你们的支持是我们前进最大的动力。如有任何问题或建议，欢迎加入 QQ 用户群（746070035）或发邮件至 musiclab2026@163.com 反馈。",
     "link": "",
     "link_text": ""
   },
