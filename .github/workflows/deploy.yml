@@ -105,7 +105,7 @@ jobs:
         with:
           apiToken: ${{ secrets.CF_API_TOKEN }}
           accountId: ${{ secrets.CF_ACCOUNT_ID }}
-          command: pages deploy dist/ --project-name=indie-launch-kit --commit-dirty=true
+          command: pages deploy dist/ --project-name=musiclab --branch=musiclab --commit-dirty=true
 
   # ─── 部署到 GitHub Pages（最简单） ───────────────────────────────────────────
   # 无需额外 Secrets，但需要在仓库 Settings > Pages 中：
