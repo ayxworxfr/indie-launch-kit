@@ -77,26 +77,27 @@ jobs:
   #
   # 使用方法：取消整个 deploy-cloudflare job 的注释即可
 
-  # deploy-cloudflare:
-  #   name: Deploy to Cloudflare Pages
-  #   runs-on: ubuntu-latest
-  #   needs: build
-  #   if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-  #   steps:
-  #     - name: 下载构建产物
-  #       uses: actions/download-artifact@v4
-  #       with:
-  #         name: dist
-  #         path: dist/
-  #
-  #     - name: 部署到 Cloudflare Pages
-  #       uses: cloudflare/pages-action@v1
-  #       with:
-  #         apiToken: ${{ secrets.CF_API_TOKEN }}
-  #         accountId: ${{ secrets.CF_ACCOUNT_ID }}
-  #         projectName: my-app-landing   # 改为你在 Cloudflare Pages 的项目名
-  #         directory: dist/
-  #         gitHubToken: ${{ secrets.GITHUB_TOKEN }}
+  deploy-cloudflare:
+    name: Deploy to Cloudflare Pages
+    runs-on: ubuntu-latest
+    needs: build
+    if: github.event_name == 'push' && github.ref == 'refs/heads/musiclab'
+    steps:
+      - name: 下载构建产物
+        uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist/
+
+      - name: 删除超大文件（APK 超过 Cloudflare 25MB 限制）
+        run: rm -f dist/*.apk
+
+      - name: 部署到 Cloudflare Pages
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CF_API_TOKEN }}
+          accountId: ${{ secrets.CF_ACCOUNT_ID }}
+          command: pages deploy dist/ --project-name=indie-launch-kit --commit-dirty=true
 
   # ─── 部署到 GitHub Pages（最简单） ───────────────────────────────────────────
   # 无需额外 Secrets，但需要在仓库 Settings > Pages 中：
