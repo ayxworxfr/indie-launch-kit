@@ -1,0 +1,18 @@
+# 本地开发密钥模板，复制为 .dev.vars 后填入真实值
+# .dev.vars 已在 .gitignore 中，不会被提交
+
+# musiclab Ed25519 私钥种子（32 字节 base64，从 musiclab/tools/keys/private_key.txt 获取）
+ED25519_PRIVATE_KEY=YOUR_ED25519_PRIVATE_KEY_BASE64
+
+# 支付宝配置（沙箱环境 AppId 示例：2021000122671111）
+ALIPAY_APP_ID=YOUR_ALIPAY_APP_ID
+
+# 支付宝应用私钥：PKCS#8 格式，去掉 -----BEGIN/END PRIVATE KEY----- 头尾和换行
+ALIPAY_PRIVATE_KEY=YOUR_ALIPAY_PKCS8_PRIVATE_KEY_BASE64
+
+# 支付宝公钥：SPKI 格式，去掉 -----BEGIN/END PUBLIC KEY----- 头尾和换行
+# 注意：这是支付宝平台提供的公钥，用于验证回调签名，不是你自己的公钥
+ALIPAY_PUBLIC_KEY=YOUR_ALIPAY_SPKI_PUBLIC_KEY_BASE64
+
+# Resend API Key（https://resend.com）
+RESEND_API_KEY=re_YOUR_API_KEY

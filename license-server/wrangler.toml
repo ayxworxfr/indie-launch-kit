@@ -1,0 +1,28 @@
+name = "license-server"
+main = "src/index.ts"
+compatibility_date = "2024-09-23"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "license-db"
+# 运行 `npx wrangler d1 create license-db` 后将输出的 ID 填入此处
+database_id = "5a3a42e4-28ff-47e2-b061-054350cfc78f"
+
+[vars]
+# Workers 部署 URL，用于拼接支付宝回调地址
+WORKER_URL = "https://license-server.your-name.workers.dev"
+# Resend 发件人地址（需在 Resend 控制台验证域名）
+FROM_EMAIL = "onboarding@resend.dev"
+# 产品名称，显示在页面标题和邮件中
+PRODUCT_NAME = "MusicLab"
+# 本地测试开关：设为 "true" 跳过支付宝调用，直接生成激活码
+SKIP_PAYMENT = "true"
+# 本地测试开关：设为 "true" 跳过邮件发送，仅在 wrangler dev 控制台打印激活码
+SKIP_EMAIL = "false"
+
+# 敏感密钥通过 `wrangler secret put` 写入，不在此处配置：
+#   ED25519_PRIVATE_KEY  musiclab 的 Ed25519 私钥种子（base64，与 musiclab tools/keys/ 同一密钥）
+#   ALIPAY_APP_ID        支付宝应用 ID
+#   ALIPAY_PRIVATE_KEY   支付宝应用私钥（PKCS#8 格式 base64，去掉头尾 -----BEGIN/END-----）
+#   ALIPAY_PUBLIC_KEY    支付宝公钥（SPKI 格式 base64，用于验证回调签名）
+#   RESEND_API_KEY       Resend API Key
