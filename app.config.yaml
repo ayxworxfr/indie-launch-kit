@@ -22,6 +22,7 @@ theme:
 
 # 下载链接：不需要的平台留空字符串 "" 即可，对应按钮会自动隐藏
 download:
+  web_url: '' # Web 版体验地址（可选，如 https://app.example.com，留空则不显示）
   ios_url: 'https://apps.apple.com/app/id123456789'
   android_url: 'https://play.google.com/store/apps/details?id=com.example.app'
   apk_url: '' # 直链 APK 地址（可选，留空则不显示）

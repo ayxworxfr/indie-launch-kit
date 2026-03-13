@@ -41,6 +41,7 @@ export interface AppConfig {
     secondary: string
   }
   download: {
+    web_url: string
     ios_url: string
     android_url: string
     apk_url: string
@@ -94,6 +95,7 @@ function mergeWithDefaults(raw: Record<string, unknown>): AppConfig {
       secondary: (theme.secondary as string) || '#764ba2',
     },
     download: {
+      web_url: (download.web_url as string) || '',
       ios_url: (download.ios_url as string) || '',
       android_url: (download.android_url as string) || '',
       apk_url: (download.apk_url as string) || '',

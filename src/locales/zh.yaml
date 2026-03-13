@@ -6,6 +6,7 @@ nav:
   menu_close: '关闭菜单'
 
 hero:
+  web_try: '网页版体验'
   ios_download: 'App Store 下载'
   android_download: 'Google Play 下载'
   apk_download: 'APK 直接下载'

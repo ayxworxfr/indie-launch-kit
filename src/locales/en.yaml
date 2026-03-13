@@ -6,6 +6,7 @@ nav:
   menu_close: 'Close menu'
 
 hero:
+  web_try: 'Try Web Version'
   ios_download: 'App Store'
   android_download: 'Google Play'
   apk_download: 'Download APK'

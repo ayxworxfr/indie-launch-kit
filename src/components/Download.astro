@@ -13,11 +13,12 @@ const { config, lang } = Astro.props
 const t = useTranslations(lang)
 
 const { download } = config
+const showWeb = !!download.web_url
 const showIos = !!download.ios_url
 const showAndroid = !!download.android_url
 const showApk = !!download.apk_url
 const showQrcode = !!download.qrcode
-const hasAnyDownload = showIos || showAndroid || showApk
+const hasAnyDownload = showWeb || showIos || showAndroid || showApk
 ---
 
 {hasAnyDownload && (
@@ -34,6 +35,14 @@ const hasAnyDownload = showIos || showAndroid || showApk
 
       <!-- 下载按钮组 -->
       <div class="flex flex-wrap justify-center gap-4 mb-10">
+        {showWeb && (
+          <a href={download.web_url} class="btn-download-primary" target="_blank" rel="noopener noreferrer">
+            <svg class="w-5 h-5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" />
+            </svg>
+            {t('hero.web_try')}
+          </a>
+        )}
         {showIos && (
           <a href={download.ios_url} class="btn-download-primary" target="_blank" rel="noopener noreferrer">
             <svg class="w-5 h-5 flex-shrink-0" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
