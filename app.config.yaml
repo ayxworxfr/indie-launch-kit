@@ -21,7 +21,7 @@ theme:
 
 # 下载链接：不需要的平台留空字符串 "" 即可，对应按钮会自动隐藏
 download:
-  web_url: '' # Web 版体验地址（可选，如 https://app.example.com，留空则不显示）
+  web_url: 'https://musiclab-web.pages.dev'  # Web 版体验地址（可选）
   ios_url: ''     # 上架 App Store 后填写
   android_url: '' # 上架 Google Play 后填写
   apk_url: 'https://ayxworxfr.github.io/indie-launch-kit/musiclab.apk'
