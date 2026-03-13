@@ -14,7 +14,9 @@ const FEATURE_ENCODE: Record<string, string> = {
   adv_practice: 'v',
   note_adv: 'n',
   sheet_edit: 'e',
+  sheet_import: 's',
   sheet_export: 'x',
+  grand_piano: 'g',
   multi_voice: 'm',
 }
 
@@ -22,24 +24,36 @@ const PLAN_ENCODE: Record<Plan, string> = {
   monthly: 'm',
   yearly: 'y',
   lifetime: 'l',
+  welfare: 'w',
 }
 
 const PLAN_PREFIX: Record<Plan, string> = {
   monthly: 'MON',
   yearly: 'YR',
   lifetime: 'PRO',
+  welfare: 'WEL',
 }
 
 const PLAN_FEATURES: Record<Plan, string[]> = {
-  monthly: ['all_courses', 'adv_practice', 'note_adv'],
-  yearly: ['all_courses', 'adv_practice', 'note_adv', 'sheet_edit', 'sheet_export'],
-  lifetime: ['all_courses', 'adv_practice', 'note_adv', 'sheet_edit', 'sheet_export', 'multi_voice'],
+  monthly: ['all_courses', 'adv_practice', 'note_adv', 'sheet_edit', 'sheet_import'],
+  yearly: ['all_courses', 'adv_practice', 'note_adv', 'sheet_edit', 'sheet_import', 'sheet_export', 'grand_piano'],
+  lifetime: [
+    'all_courses',
+    'adv_practice',
+    'note_adv',
+    'sheet_edit',
+    'sheet_import',
+    'sheet_export',
+    'grand_piano',
+    'multi_voice',
+  ],
+  // welfare 不含 sheet_import，全功能体验版
+  welfare: ['all_courses', 'adv_practice', 'note_adv', 'sheet_edit', 'sheet_export', 'grand_piano', 'multi_voice'],
 }
 
-const PLAN_DURATION_SECS: Record<Plan, number | null> = {
+const PLAN_DURATION_SECS: Partial<Record<Plan, number>> = {
   monthly: 30 * 86400,
   yearly: 365 * 86400,
-  lifetime: null,
 }
 
 /**
@@ -48,14 +62,22 @@ const PLAN_DURATION_SECS: Record<Plan, number | null> = {
  * 格式：PREFIX.PAYLOAD_BASE64URL.SIGNATURE_BASE64URL
  *
  * @param privateKeyBase64 32 字节 Ed25519 私钥种子，base64 编码（来自 musiclab tools/keys/private_key.txt）
+ * @param welfareDays welfare 套餐专用，有效天数（7-30），其他套餐忽略此参数
  */
-export function generateLicense(plan: Plan, deviceId: string, privateKeyBase64: string): string {
+export function generateLicense(plan: Plan, deviceId: string, privateKeyBase64: string, welfareDays?: number): string {
   const now = Math.floor(Date.now() / 1000)
-  const duration = PLAN_DURATION_SECS[plan]
+
+  let expireAt: number
+  if (plan === 'welfare') {
+    expireAt = now + (welfareDays ?? 30) * 86400
+  } else {
+    const durationSecs = PLAN_DURATION_SECS[plan]
+    expireAt = durationSecs === undefined ? 0 : now + durationSecs
+  }
 
   const payload: Record<string, unknown> = {
     f: PLAN_FEATURES[plan].map(f => FEATURE_ENCODE[f]),
-    e: duration === null ? 0 : now + duration,
+    e: expireAt,
     p: PLAN_ENCODE[plan],
     i: now,
     d: deviceId,

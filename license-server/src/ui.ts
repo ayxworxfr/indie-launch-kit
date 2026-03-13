@@ -1,19 +1,27 @@
+import type { Plan } from './types'
 import { PLANS } from './types'
 
 /**
  * 返回付款页 HTML，由 Workers 内联渲染，无需单独的前端构建。
- * 前端状态机：form → qrcode → success
+ * 前端状态机：form → qrcode → success（welfare/SKIP_PAYMENT 时跳过 qrcode）
  */
-export function renderPage(productName: string): string {
-  // 服务端套餐配置序列化后注入前端，保持单一数据源
+export function renderPage(opts: { productName: string; visiblePlans: Plan[] }): string {
+  const { productName, visiblePlans } = opts
+
+  // 只注入可见套餐，避免前端拿到隐藏套餐数据
   const plansJson = JSON.stringify(
     Object.fromEntries(
-      Object.entries(PLANS).map(([k, v]) => [
-        k,
-        { name: v.name, price: v.price, durationDays: v.durationDays, features: v.features, badge: v.badge },
-      ]),
+      visiblePlans
+        .filter(k => PLANS[k])
+        .map(k => {
+          const v = PLANS[k]
+          return [k, { name: v.name, price: v.price, durationDays: v.durationDays, customDuration: v.customDuration, features: v.features, badge: v.badge }]
+        }),
     ),
   )
+
+  // 默认选中「年度」，如果不在可见列表里就选第一个
+  const defaultPlan = visiblePlans.includes('yearly') ? 'yearly' : (visiblePlans[0] ?? 'yearly')
 
   return `<!DOCTYPE html>
 <html lang="zh-CN">
@@ -59,6 +67,17 @@ export function renderPage(productName: string): string {
       <div class="mb-6">
         <label class="block text-sm font-medium text-gray-700 mb-3">选择套餐</label>
         <div id="plan-cards" class="space-y-3"></div>
+      </div>
+
+      <!-- welfare 天数输入，选中公益码时显示 -->
+      <div id="welfare-days-row" class="hidden mb-6">
+        <label class="block text-sm font-medium text-gray-700 mb-1.5">
+          有效天数
+          <span class="ml-1.5 text-xs text-gray-400 font-normal">7 - 30 天</span>
+        </label>
+        <input id="welfareDays" type="number" min="7" max="30" value="30"
+          class="w-full px-4 py-2.5 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition"
+          oninput="this.value = Math.min(30, Math.max(7, parseInt(this.value) || 7))">
       </div>
 
       <div id="error-msg" class="hidden mb-4 p-3 bg-red-50 border border-red-200 rounded-lg text-sm text-red-600"></div>
@@ -130,25 +149,25 @@ export function renderPage(productName: string): string {
         <p class="text-sm font-semibold text-blue-800 mb-2">如何激活？</p>
         <ol class="text-sm text-blue-700 space-y-1 list-decimal list-inside leading-relaxed">
           <li>打开 ${productName} App</li>
-          <li>进入「设置 → 账号 → 输入激活码」</li>
-          <li>粘贴激活码，点击激活</li>
+          <li>点击底部导航「我的」→「会员激活」</li>
+          <li>粘贴激活码，点击「激 活」</li>
         </ol>
       </div>
     </div>
   </div>
 
-${buildScript(plansJson)}
+${buildScript(plansJson, defaultPlan)}
 </body>
 </html>`
 }
 
 /** 前端脚本单独构建，避免在 TS 模板字符串中对 JS 模板字符串双重转义 */
-function buildScript(plansJson: string): string {
+function buildScript(plansJson: string, defaultPlan: string): string {
   return (
     '<script>\n' +
     '  const PLANS = ' + plansJson + '\n' +
     '\n' +
-    '  let selectedPlan = "yearly"\n' +
+    '  let selectedPlan = "' + defaultPlan + '"\n' +
     '  let currentTradeNo = null\n' +
     '  let pollTimer = null\n' +
     '\n' +
@@ -163,11 +182,18 @@ function buildScript(plansJson: string): string {
     '      const badgeHtml = plan.badge\n' +
     '        ? \'<span class="text-xs bg-indigo-600 text-white px-2 py-0.5 rounded-full ml-2 align-middle">\' + plan.badge + "</span>"\n' +
     '        : ""\n' +
-    '      const durationText = plan.durationDays ? plan.durationDays + " 天" : "永久有效"\n' +
+    '      const durationText = plan.customDuration\n' +
+    '        ? "自定义天数"\n' +
+    '        : plan.durationDays\n' +
+    '          ? plan.durationDays + " 天"\n' +
+    '          : "永久有效"\n' +
     '      const checkIcon = \'<svg class="w-3.5 h-3.5 text-green-500 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>\'\n' +
     '      const featuresHtml = plan.features.map(function(f) {\n' +
     '        return \'<li class="flex items-center text-xs text-gray-500 gap-1.5">\' + checkIcon + f + "</li>"\n' +
     '      }).join("")\n' +
+    '      const priceHtml = plan.price === 0\n' +
+    '        ? \'<div class="text-2xl font-bold text-green-600">免费</div>\'\n' +
+    '        : \'<div class="text-2xl font-bold text-gray-900">¥\' + plan.price + "</div>"\n' +
     '\n' +
     '      card.innerHTML =\n' +
     '        \'<div class="flex justify-between items-start">\' +\n' +
@@ -175,12 +201,14 @@ function buildScript(plansJson: string): string {
     '            \'<span class="text-base font-semibold text-gray-900">\' + plan.name + "</span>" + badgeHtml +\n' +
     '            \'<p class="text-xs text-gray-400 mt-0.5">\' + durationText + "</p>" +\n' +
     '          "</div>" +\n' +
-    '          \'<div class="text-2xl font-bold text-gray-900">¥\' + plan.price + "</div>" +\n' +
+    '          priceHtml +\n' +
     '        "</div>" +\n' +
     '        \'<ul class="mt-3 space-y-1.5">\' + featuresHtml + "</ul>"\n' +
     '\n' +
     '      container.appendChild(card)\n' +
     '    })\n' +
+    '    // 初始化时同步 welfare 天数行和按钮文字\n' +
+    '    syncWelfareUI(selectedPlan)\n' +
     '  }\n' +
     '\n' +
     '  function selectPlan(plan) {\n' +
@@ -190,6 +218,12 @@ function buildScript(plansJson: string): string {
     '      card.classList.toggle("selected", isSelected)\n' +
     '      card.classList.toggle("border-gray-200", !isSelected)\n' +
     '    })\n' +
+    '    syncWelfareUI(plan)\n' +
+    '  }\n' +
+    '\n' +
+    '  function syncWelfareUI(plan) {\n' +
+    '    document.getElementById("welfare-days-row").classList.toggle("hidden", plan !== "welfare")\n' +
+    '    document.getElementById("submit-btn").textContent = plan === "welfare" ? "生成激活码" : "立即购买"\n' +
     '  }\n' +
     '\n' +
     '  function showView(name) {\n' +
@@ -222,6 +256,16 @@ function buildScript(plansJson: string): string {
     '      return\n' +
     '    }\n' +
     '\n' +
+    '    const body = { email, deviceId, plan: selectedPlan }\n' +
+    '    if (selectedPlan === "welfare") {\n' +
+    '      const days = parseInt(document.getElementById("welfareDays").value)\n' +
+    '      if (!days || days < 7 || days > 30) {\n' +
+    '        showError("有效天数须为 7 至 30 的整数")\n' +
+    '        return\n' +
+    '      }\n' +
+    '      body.welfareDays = days\n' +
+    '    }\n' +
+    '\n' +
     '    const btn = document.getElementById("submit-btn")\n' +
     '    btn.disabled = true\n' +
     '    btn.textContent = "处理中..."\n' +
@@ -230,11 +274,16 @@ function buildScript(plansJson: string): string {
     '      const res = await fetch("/api/order/create", {\n' +
     '        method: "POST",\n' +
     '        headers: { "Content-Type": "application/json" },\n' +
-    '        body: JSON.stringify({ email, deviceId, plan: selectedPlan }),\n' +
+    '        body: JSON.stringify(body),\n' +
     '      })\n' +
     '      const data = await res.json()\n' +
     '      if (!data.ok) {\n' +
     '        showError(data.message || "创建订单失败，请稍后重试")\n' +
+    '        return\n' +
+    '      }\n' +
+    '      // welfare 或 SKIP_PAYMENT 时服务端已直接履约\n' +
+    '      if (data.fulfilled) {\n' +
+    '        showSuccess(data.licenseKey)\n' +
     '        return\n' +
     '      }\n' +
     '      currentTradeNo = data.tradeNo\n' +
@@ -244,7 +293,7 @@ function buildScript(plansJson: string): string {
     '      showError("网络错误，请检查网络后重试")\n' +
     '    } finally {\n' +
     '      btn.disabled = false\n' +
-    '      btn.textContent = "立即购买"\n' +
+    '      syncWelfareUI(selectedPlan)\n' +
     '    }\n' +
     '  }\n' +
     '\n' +

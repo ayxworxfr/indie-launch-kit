@@ -37,7 +37,7 @@ export async function sendLicenseEmail(opts: {
         <p style="margin:0 0 8px;color:#1d4ed8;font-size:14px;font-weight:600">如何激活？</p>
         <ol style="margin:0;padding-left:20px;color:#374151;font-size:14px;line-height:2">
           <li>打开 ${opts.productName} App</li>
-          <li>进入「设置 → 账号 → 输入激活码」</li>
+          <li>点击底部导航「我的」→「会员激活」</li>
           <li>粘贴上方激活码，点击「激活」</li>
         </ol>
       </div>

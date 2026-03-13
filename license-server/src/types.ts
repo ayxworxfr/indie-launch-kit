@@ -12,6 +12,8 @@ export interface Env {
   WORKER_URL: string
   FROM_EMAIL: string
   PRODUCT_NAME: string
+  /** 逗号分隔的可见套餐列表，控制购买页展示哪些套餐，如 "monthly,yearly,lifetime,welfare" */
+  VISIBLE_PLANS: string
   /** "true" 跳过支付宝调用，直接生成激活码（仅本地测试）*/
   SKIP_PAYMENT: string
   /** "true" 跳过邮件发送，激活码仅打印至控制台（仅本地测试）*/
@@ -21,9 +23,9 @@ export interface Env {
 /** Workers env 变量均为字符串，此函数统一处理布尔开关判断 */
 export const isTrue = (val: string): boolean => val === 'true'
 
-export type Plan = 'monthly' | 'yearly' | 'lifetime'
+export type Plan = 'monthly' | 'yearly' | 'lifetime' | 'welfare'
 
-export const VALID_PLANS = new Set<Plan>(['monthly', 'yearly', 'lifetime'])
+export const VALID_PLANS = new Set<Plan>(['monthly', 'yearly', 'lifetime', 'welfare'])
 
 export interface Order {
   id: number
@@ -40,8 +42,10 @@ export interface Order {
 export interface PlanConfig {
   name: string
   price: number
-  /** 有效天数，null 表示永久 */
+  /** 有效天数，null 表示永久，配合 customDuration 使用时由下单参数决定 */
   durationDays: number | null
+  /** true 表示有效期由用户在下单时指定（仅 welfare 套餐） */
+  customDuration?: boolean
   features: string[]
   badge?: string
 }
@@ -55,19 +59,35 @@ export const PLANS: Record<Plan, PlanConfig> = {
     name: '月度会员',
     price: 29,
     durationDays: 30,
-    features: ['解锁全部课程', '高级练习模式', '识谱进阶难度'],
+    features: ['解锁全部课程', '高级练习模式', '识谱进阶难度', '乐谱编辑器', '乐谱导入（月度限3次）'],
   },
   yearly: {
     name: '年度会员',
     price: 99,
     durationDays: 365,
-    features: ['解锁全部课程', '高级练习模式', '识谱进阶难度', '乐谱编辑器', 'PDF 高清导出'],
+    features: ['解锁全部课程', '高级练习模式', '识谱进阶难度', '乐谱编辑器', '乐谱导入', '乐谱导出', '三角钢琴音色'],
     badge: '推荐',
   },
   lifetime: {
     name: '永久会员',
     price: 198,
     durationDays: null,
-    features: ['解锁全部课程', '高级练习模式', '识谱进阶难度', '乐谱编辑器', 'PDF 高清导出', '多音源支持'],
+    features: [
+      '解锁全部课程',
+      '高级练习模式',
+      '识谱进阶难度',
+      '乐谱编辑器',
+      '乐谱导入',
+      '乐谱导出',
+      '三角钢琴音色',
+      '多音源支持',
+    ],
+  },
+  welfare: {
+    name: '公益码',
+    price: 0,
+    durationDays: null,
+    customDuration: true,
+    features: ['解锁全部课程', '高级练习模式', '识谱进阶难度', '乐谱编辑器', '乐谱导出', '三角钢琴音色', '多音源支持'],
   },
 }

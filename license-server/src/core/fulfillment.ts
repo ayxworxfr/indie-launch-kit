@@ -11,14 +11,14 @@ type FulfillEnv = Pick<
 
 /**
  * 生成激活码、更新订单状态、发送邮件。
- * 作为 SKIP_PAYMENT 和真实支付回调的统一履约出口。
+ * 作为 welfare 免费直发、SKIP_PAYMENT 和真实支付回调的统一履约出口。
  */
 export async function fulfillOrder(
   db: D1Database,
-  order: { tradeNo: string; plan: Plan; deviceId: string; email: string },
+  order: { tradeNo: string; plan: Plan; deviceId: string; email: string; welfareDays?: number },
   env: FulfillEnv,
 ): Promise<string> {
-  const licenseKey = generateLicense(order.plan, order.deviceId, env.ED25519_PRIVATE_KEY)
+  const licenseKey = generateLicense(order.plan, order.deviceId, env.ED25519_PRIVATE_KEY, order.welfareDays)
   await markOrderPaid(db, order.tradeNo, licenseKey)
 
   if (isTrue(env.SKIP_EMAIL)) {

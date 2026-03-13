@@ -14,15 +14,22 @@ interface OrderBody {
   email: string
   deviceId: string
   plan: Plan
+  welfareDays?: number
 }
 
 function parseOrderBody(raw: unknown): OrderBody | string {
   if (!raw || typeof raw !== 'object') return '请求格式错误'
-  const { email, deviceId, plan } = raw as Record<string, unknown>
+  const { email, deviceId, plan, welfareDays } = raw as Record<string, unknown>
 
   if (typeof email !== 'string' || !EMAIL_RE.test(email)) return '邮箱格式不正确'
   if (typeof deviceId !== 'string' || !DEVICE_ID_RE.test(deviceId)) return '设备 ID 格式不正确，请在 App 中复制'
   if (typeof plan !== 'string' || !VALID_PLANS.has(plan as Plan)) return '套餐类型不正确'
+
+  if (plan === 'welfare') {
+    const days = Number(welfareDays)
+    if (!Number.isInteger(days) || days < 7 || days > 30) return '公益码有效天数须为 7 至 30 的整数'
+    return { email, deviceId, plan: 'welfare', welfareDays: days }
+  }
 
   return { email, deviceId, plan: plan as Plan }
 }
@@ -35,7 +42,7 @@ router.post('/order/create', async c => {
     return c.json({ ok: false, message: body }, 400)
   }
 
-  const { email, deviceId, plan } = body
+  const { email, deviceId, plan, welfareDays } = body
   const tradeNo = `ORD${Date.now()}${Math.random().toString(36).slice(2, 6).toUpperCase()}`
 
   await createOrder(c.env.DB, {
@@ -46,9 +53,10 @@ router.post('/order/create', async c => {
     amount: PLANS[plan].price.toFixed(2),
   })
 
-  if (isTrue(c.env.SKIP_PAYMENT)) {
-    await fulfillOrder(c.env.DB, { tradeNo, plan, deviceId, email }, c.env)
-    return c.json({ ok: true, tradeNo, qrCode: 'mock' })
+  // 公益码免费直发，或本地测试跳过支付
+  if (plan === 'welfare' || isTrue(c.env.SKIP_PAYMENT)) {
+    const licenseKey = await fulfillOrder(c.env.DB, { tradeNo, plan, deviceId, email, welfareDays }, c.env)
+    return c.json({ ok: true, tradeNo, fulfilled: true, licenseKey })
   }
 
   const qrCode = await createAlipayOrder({

@@ -15,6 +15,9 @@ WORKER_URL = "https://license-server.your-name.workers.dev"
 FROM_EMAIL = "onboarding@resend.dev"
 # 产品名称，显示在页面标题和邮件中
 PRODUCT_NAME = "MusicLab"
+# 购买页展示的套餐列表（逗号分隔），可选值：monthly / yearly / lifetime / welfare
+# 调整顺序即可改变页面卡片排列顺序
+VISIBLE_PLANS = "monthly,yearly,lifetime,welfare"
 # 本地测试开关：设为 "true" 跳过支付宝调用，直接生成激活码
 SKIP_PAYMENT = "true"
 # 本地测试开关：设为 "true" 跳过邮件发送，仅在 wrangler dev 控制台打印激活码
